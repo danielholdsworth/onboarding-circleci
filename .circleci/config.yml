@@ -16,7 +16,7 @@ jobs:
       - run: echo "Trying out workspaces" > my_workspace/echo-output
       - run:
           name: Update NPM
-          command: sudo npm install -g npm@5 > my_workspace/
+          command: sudo npm install -g npm@5 > my_workspace/node_modules
       # - restore_cache:
       #     key: dependency-cache-{{ checksum "package-lock.json" }}
       - persist_to_workspace:
