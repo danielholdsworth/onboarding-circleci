@@ -14,8 +14,8 @@ jobs:
       - run: ls -a
       - run: pwd
       - persist_to_workspace:
-          root: my_workspace
-          path: my_workspace
+          root: /home/circleci/project/my_workspace
+          path: /home/circleci/project/my_workspace/reactapp
       # - run:
       #     name: Update NPM
       #     command: "sudo npm install -g npm@5"
