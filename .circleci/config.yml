@@ -1,60 +1,48 @@
 version: 2.1
-
-jobs: 
+jobs:
   build:
     docker:
-      - image: circleci/node:10.16.3
-        auth:
-          username: mydockerhub-user
-          password: $DOCKERHUB_PASSWORD  # context / project UI env-var reference
+      - image: circleci/node:12.9.1-browsers
+
+    working_directory: ~/repo
+
     steps:
       - checkout
-      - run: echo "A first hello"
-      - run: mkdir -p my_workspace
-      - run: ls -a
-      - run: pwd
-      - run: echo "Trying out workspaces" > my_workspace/echo-output
-      - run:
-          name: Update NPM
-          command: sudo npm install -g npm@5
-      - run:
-          name: Install Dependencies
-          command: npm install > my_workspace/node_modules
-      # - restore_cache:
-      #     key: dependency-cache-{{ checksum "package-lock.json" }}
-      - persist_to_workspace:
-          # Must be an absolute path, or relative path from working_directory
-          root: my_workspace
-          # Must be relative path from root
-          paths:
-            - echo-output
-      - run: cd my_workspace && ls -a
-      # - restore_cache:
-      #     key: dependency-cache-{{ checksum "package-lock.json" }}
-      # - run:
-      #     name: Install Dependencies
-      #     command: npm install
-      # - save_cache:
-      #     key: dependency-cache-{{ checksum "package-lock.json" }}
-      #     paths:
-      #       - ./node_modules
-  
-  # test:
-  #   working_directory: ~/circleci-nodejs
-  #   docker:
-  #     - image: circleci/node:10.16.3
-  #   steps:
-  #     - checkout
-  #     - attach_workspace:
-  #         at: my_workspace
-  #     - run:
-  #         name: Run tests
-  #         command: npm run test
 
-workflows:
-  build_and_test:
-    jobs:
-      - build
-      # - test:
-      #     requires:
-      #       - build
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "package.json" }}
+            # fallback to using the latest cache if no exact match is found
+            - v1-dependencies-
+      - run: yarn install
+
+      - save_cache:
+          paths:
+            - node_modules
+            - ~/.npm
+            - ~/.cache
+          key: v1-dependencies-{{ checksum "package.json" }}
+      - run: yarn test 
+
+      # - snyk/scan:
+      #     fail-on-issues: false
+      #     monitor-on-build: false
+      #     severity-threshold: high
+
+      # - run: yarn lint
+
+      # - run: yarn size
+
+      # - run: yarn test
+
+      # - run: yarn ci:cypress-run
+
+      # - run: yarn build
+
+      # - aws-s3/sync:
+      #     from: build
+      #     to: "s3://cra-ci-demo/"
+      #     arguments: |
+      #       --acl public-read \
+      #       --cache-control "max-age=86400"
+      #     overwrite: true
