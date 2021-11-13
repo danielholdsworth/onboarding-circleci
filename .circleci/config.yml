@@ -14,6 +14,11 @@ jobs:
       - run: ls -a
       - run: pwd
       - run: echo "Trying out workspaces" > my_workspace/echo-output
+      - run:
+          name: Update NPM
+          command: sudo npm install -g npm@5 > my_workspace/
+      # - restore_cache:
+      #     key: dependency-cache-{{ checksum "package-lock.json" }}
       - persist_to_workspace:
           # Must be an absolute path, or relative path from working_directory
           root: my_workspace
