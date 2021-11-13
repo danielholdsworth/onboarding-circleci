@@ -12,6 +12,7 @@ jobs:
       - run: echo "A first hello"
       - run: mkdir -p my_workspace
       - run: ls -a
+      - run: pwd
       - persist_to_workspace:
           root: my_workspace
           path: my_workspace
