@@ -11,7 +11,7 @@ jobs:
       - checkout
       - run: echo "A first hello"
       - run: mkdir -p my_workspace
-      - run: echo pwd
+      - run: echo ls -a
       # - persist_to_workspace:
       #     root: my_workspace
       #     path: reactapp
