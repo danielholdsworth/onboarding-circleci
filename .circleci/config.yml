@@ -7,6 +7,9 @@ jobs:
       - image: circleci/node:10.16.3
     steps:
       - checkout
+      - run: mkdir -p my_workspace
+      - persist_to_workspace:
+          root: my_workspace
       - run:
           name: Update NPM
           command: "sudo npm install -g npm@5"
@@ -26,6 +29,8 @@ jobs:
       - image: circleci/node:10.16.3
     steps:
       - checkout
+      - attach_workspace:
+          at: my_workspace
       - run:
           name: Run tests
           command: npm run test
