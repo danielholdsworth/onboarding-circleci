@@ -12,7 +12,7 @@ workflows:
             - build
           filters:
             branches:
-              only: sequential-branch-filter
+              only: main
 
 jobs:
   build:
@@ -38,12 +38,6 @@ jobs:
       - run:
           name: Run tests 
           command: npm test
-      - run: mkdir test-results
-      - store_test_results:
-          path: test-results
-      - store_artifacts:
-          path: test-results 
-
       # - snyk/scan:
       #     fail-on-issues: false
       #     monitor-on-build: false
@@ -58,11 +52,3 @@ jobs:
       # - run: yarn ci:cypress-run
 
       # - run: yarn build
-
-      # - aws-s3/sync:
-      #     from: build
-      #     to: "s3://cra-ci-demo/"
-      #     arguments: |
-      #       --acl public-read \
-      #       --cache-control "max-age=86400"
-      #     overwrite: true
