@@ -16,7 +16,10 @@ jobs:
       - run: echo "Trying out workspaces" > my_workspace/echo-output
       - run:
           name: Update NPM
-          command: sudo npm install -g npm@5 > my_workspace/node_modules
+          command: sudo npm install -g npm@5
+      - run:
+          name: Install Dependencies
+          command: npm install > my_workspace/node_modules
       # - restore_cache:
       #     key: dependency-cache-{{ checksum "package-lock.json" }}
       - persist_to_workspace:
@@ -26,9 +29,6 @@ jobs:
           paths:
             - echo-output
       - run: cd my_workspace && ls -a
-      # - run:
-      #     name: Update NPM
-      #     command: "sudo npm install -g npm@5"
       # - restore_cache:
       #     key: dependency-cache-{{ checksum "package-lock.json" }}
       # - run:
