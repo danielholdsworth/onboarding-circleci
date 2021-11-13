@@ -20,6 +20,7 @@ jobs:
           # Must be relative path from root
           paths:
             - echo-output
+      - run: cd my_workspace && ls -a
       # - run:
       #     name: Update NPM
       #     command: "sudo npm install -g npm@5"
