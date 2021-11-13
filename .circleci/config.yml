@@ -38,6 +38,10 @@ jobs:
       - run:
           name: Run tests 
           command: npm test 
+      - store_test_results:
+          path: test-results
+      - store_artifacts:
+          path: test-results 
 
       # - snyk/scan:
       #     fail-on-issues: false
