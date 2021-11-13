@@ -12,9 +12,9 @@ jobs:
       - run: echo "A first hello"
       - run: mkdir -p my_workspace
       - run: ls -a
-      # - persist_to_workspace:
-      #     root: my_workspace
-      #     path: reactapp
+      - persist_to_workspace:
+          root: my_workspace
+          path: my_workspace
       # - run:
       #     name: Update NPM
       #     command: "sudo npm install -g npm@5"
