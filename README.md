@@ -4,8 +4,6 @@ This project was created to complete the Circle CI Technical Interview Assessmen
 
 ## Docker Challenges
 
-In the project directory, you can run:
-
 ### Exercise 1
 
     docker run -it circleci/challenge-1 bash
