@@ -16,7 +16,7 @@ class App extends Component {
     <div className="App">
       <header className="App-header">
         <div className="App">
-            {this.state.showMessage && <p>Here is a simple Hello World</p>}
+            {this.state.showMessage && <p>Here is a simple Hello World React App Deployed by CircleCI</p>}
             <button data-testid="btn" onClick={this.onButtonClickHandler}>Enter</button>
         </div>
       </header>

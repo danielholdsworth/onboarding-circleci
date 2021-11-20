@@ -8,5 +8,5 @@ test('Should display text', () => {
    const btnIncrement = screen.getByTestId("btn");
    fireEvent.click(btnIncrement);
 
-   expect(screen.getByText("Here is a simple Hello World")).toBeInTheDocument();
+   expect(screen.getByText("Here is a simple Hello World React App Deployed by CircleCI")).toBeInTheDocument();
 });
