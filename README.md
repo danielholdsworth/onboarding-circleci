@@ -113,3 +113,46 @@ Likewise we can also exec into the container and run the same commands (dropping
     sudo kill <PID>
 
 ## Build and Test
+
+The pplication is this repository is a simple Hello-World react app.
+
+The app contains a button and when clicked it will display some new text to the screen 
+'``Here is a simple Hello World``'.
+
+The test suite contains one test to test the functionality of this button, 
+'``Should display text``'.
+
+The following is the link for the Circle CI Build & Test https://app.circleci.com/pipelines/github/derry-b-96/circleci-demo?branch=main
+
+Our Workflow has two steps ``build`` & ``heroku/deploy-via-git``. 
+
+* ``Build`` uses a CircleCI provided Docker Image ``circleci/node:12.9.1-browsers`` and 
+includes the following steps
+
+    1) Checkout
+    2) Update NPM
+    3) Restore Cache
+    4) Install Dependencies
+    5) Save Cache
+    6) Run Tests
+
+
+## Deploy (optional)
+* ``heroku/deploy-via-git`` is a pre configured job offered by CircleCI. In order to 
+utilize this job we must import and invoke the herouku orb like so
+
+        orbs:
+            heroku: circleci/heroku@0.0.10 
+
+
+Before utilizing the built in heroku capability offered by CircleCI we must first deploy the application from our own machine. 
+
+1) Set up your Heroku Environment 
+2) Confirm your GIT repository. At this point we can push directly to the Herouku master branch
+3) We can then configure CircleCI and create the environment variables needed to deploy our Heroku Application
+
+Once deployed and configured to utilize CircleCI, and changes we commit to our application can be viewed at the following URL hosted by Heroku: 
+https://circle-react-dboi.herokuapp.com/
+
+
+
