@@ -1,70 +1,115 @@
-# Getting Started with Create React App
+# Circle CI Solutions and Success Engineer Technical Assessment
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This project was created to complete the Circle CI Technical Interview Assessment
 
-## Available Scripts
+## Docker Challenges
 
 In the project directory, you can run:
 
-### `npm start`
+### Exercise 1
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+    docker run -it circleci/challenge-1 bash
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+First things first - get curl running on our container
 
-### `npm test`
+    apt-get update; apt-get install curl
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+I have to say I was a little confused when the proxy error popped up initally. I knew I had no proxy set on my local machine so I first tried to debug by running the container with some envs like so my curl command from in the container would ignore the myproxy.local
 
-### `npm run build`
+1) docker run --rm --env no_proxy="http://myproxy.local" -it circleci/challenge-1 bash
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+When I noticed this didnt work and I was getting back the same error I began to explore some of the documentation on Curl from my command line. 
+    
+    curl --help
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+I noticed a ``noproxy`` flag so gave this a try. According to the curl manual this takes a comma-separated list of hosts that do not use the proxy but I just keyed in ``'*'``. 
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+    curl --noproxy '*' google.com
 
-### `npm run eject`
+I then became curious as to where this proxy was coming from so I had a look around the container for the ``.bashrc`` file. I navigated to the ``root`` directory where I found my ``.bashrc`` and also a ``.curlrc`` that caught my eye. 
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+I then installed my favourite linux text editor on the container ``vim`` and opened up the ``.curlrc`` file. I simply commented out/removed the proxy declaration here and I could then simply run
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+    curl google.com
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+### Exercise 2
 
-## Learn More
+I ran the container whose job is to serve up a simple hello-world container. 
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+    docker run circleci/challenge-2
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+When I tried to hit the endpoint going to ``localhost:8000`` in chrome, I was unable to access the site. This is due to the fact that none of the containers ports were published to the outside world.
 
-### Code Splitting
+In order to access the site I needed to map a port on the container to the port on the Docker host which will give me access to the website.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+    docker run -p 8000:8000 circleci/challenge-2
 
-### Analyzing the Bundle Size
+This maps port 8000 in the container to port 8000 on the docker host and enables us to hit the website from our browser.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+### Exercise 3
 
-### Making a Progressive Web App
+I fired up this container with the following command 
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+    docker run --rm -d -p 8000:80 circleci/challenge-3
 
-### Advanced Configuration
+I then exec'd into the container using the container ID and had a look around.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+I ``cd`` in this directory ``/etc/nginx/`` and ran the following command
 
-### Deployment
+    cat nginx.conf
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+I looked for this line ``include /etc/nginx/conf.d/*.conf;`` which told me that all the confs in this directory were used.
 
-### `npm run build` fails to minify
+I then went to this directory and noted that this had one file, ``default.conf``.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+In here I could see some information that was given to me in the exercise specification such as the server (``localhost``) and the port (``80``).
+
+I also noted the file that would be displayed is in this directory
+
+    /usr/share/nginx/html/
+
+I took a look at the file here and saw the 'Welcome to nginx' homepage.
+
+I then located the ``Hello World`` file that we want to display in this location
+
+    /etc/mysite/index.html
+
+I then mounted this file to the location declared in the default.conf like so
+
+    mv /etc/mysite/index.html /usr/share/nginx/html/index.html
+
+Now when I tried to hit localhost:8000 I was able to see the ``Hello World`` html
+
+### Exercise 4
+
+    docker run -d circleci/challenge-4
+
+    docker exec -it e2e8fd353c70 /bin/sh
+
+ 1) What processes are using memory
+
+It is possible to show all the processes running inside a container without
+login to terminal by using the following command. Of course,
+it is just like how one can see by using ps -eaf, so just add it to docker exec.
+
+    sudo docker exec -it c1bdbe1323a9 ps -eaf
+
+    docker top c1bdbe1323a9 
+
+Likewise we can also exec into the container and run the same commands (dropping the ``docker`` & ``<container-id>``)
+
+ 2) Where were the processes started from?
+
+ I like to use ``ps few`` to find this out.
+
+ Its important to note here that if a program was started out of someones $PATH, you
+ will only see the executable name, not the full path
+
+ 3) Can you stop the processes?
+
+ Sure, ones we identify the processes we want to kill on the container we can do so with the following command 
+
+    sudo kill <PID>
+
+## Build and Test
