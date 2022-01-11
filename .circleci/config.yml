@@ -24,6 +24,15 @@ jobs:
           at: ~/repo/workspace
       - run: ls ~/repo/workspace/compiled_output.txt
 
+  test-environment:
+    docker:
+      - image: cimg/base:stable
+    
+    working_directory: ~/repo
+    
+    steps:
+      - run: echo test-env step   
+
   deploy:
     docker:
       - image: cimg/base:stable
@@ -46,4 +55,16 @@ workflows:
       - deploy:
           requires: 
             - test  
+          filters: 
+            branches: 
+              only: 
+                - master 
+      - test-environment:
+          requires:
+            - test
+          filters:
+            branch:
+              ignore:
+                master
+
 
