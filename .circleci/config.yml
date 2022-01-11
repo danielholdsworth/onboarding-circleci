@@ -4,20 +4,25 @@ jobs:
   build:
     docker:
       - image: cimg/base:stable
-    
     working_directory: ~/repo
-    
     steps:
       - run: echo build step
+      - run: mkdir build_output
+      - run: touch build_output/compiled_output.txt
+      - persist_to_workspace:
+          root: build_output
+          paths: 
+            - '*'
   
   test:
     docker:
       - image: cimg/base:stable
-    
     working_directory: ~/repo
-    
     steps:
       - run: echo test step
+      - attach_workspace:
+          at: ~/repo/workspace
+      - run: ls ~/repo/workspace/compiled_output.txt
 
   deploy:
     docker:
