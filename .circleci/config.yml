@@ -4,5 +4,5 @@ jobs:
     docker:
       - image: circleci/ruby:2.4.1
     steps:
-      - checkout
-      - run: echo "A first hello"
+      - checkout # Checkout github repo and clone into virtual environment
+      - run: notacommand
