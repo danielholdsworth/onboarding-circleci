@@ -5,16 +5,15 @@ workflows:
   build_and_test:
     jobs:
       - build
-      - testa:
+      - test:
           requires:
             - build 
-      - testb:
+      - deploy-staging:
           requires:
             - build 
-      - deploy:
+      - deploy-prod:
           requires:
-            - testa
-            - testb
+            - test
 
 jobs:
   build:
@@ -22,45 +21,22 @@ jobs:
       - image: circleci/ruby:2.4.1
     steps:
       - checkout
-      - run: mkdir -p my_workspace
-      - run: echo "Hello my new workspace" > my_workspace/echo-output
-      - persist_to_workspace:
-          root: my_workspace
-          paths:
-            - echo-output
+      - run: echo "Hello build"
 
-  testa:
+  test:
     docker:
       - image: circleci/ruby:2.4.1
     steps:
-      - attach_workspace:
-          at: my_workspace
-      - run: cat my_workspace/echo-output
+      - run: echo "Hello test"
   
-  testb:
+  deploy-staging:
     docker:
       - image: circleci/ruby:2.4.1
     steps:
-      - attach_workspace:
-          # Must be absolute path or relative path from working_directory
-          at: my_workspace
-
-      - run: |
-          # this will fail intentionally, we'll use SSH to debug and fix
-          if [[ $(cat my_workspace/echo-output) == "Hello my new workspace" ]]; then
-            echo "It worked!";
-          else
-            echo "Nope!"; exit 1
-          fi
+      - run: echo "hello deploy staging"
       
-  deploy:
+  deploy-prod:
     docker:
       - image: circleci/ruby:2.4.1
     steps:
-      - attach_workspace:
-          # Must be absolute path or relative path from working_directory
-          at: my_workspace
-
-      - run: |
-          echo "Deploying message!"
-          cat my_workspace/echo-output
+      - run: echo "hello deploy-prod"
