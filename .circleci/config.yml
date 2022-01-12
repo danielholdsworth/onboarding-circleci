@@ -3,24 +3,47 @@ version: 2
 workflows:
   version: 2
   build_and_test:
-    jobs: 
+    jobs:
       - build
-      - test:
+      - testa:
           requires:
-            - build
+            - build 
+      - testb:
+          requires:
+            - build 
+      - deploy:
+          requires:
+            - testa
+            - testb
 
 jobs:
   build:
     docker:
       - image: circleci/ruby:2.4.1
     steps:
-      - checkout # Checkout github repo and clone into virtual environment
+      - checkout
       - run: echo "A first hello"
       - run: sleep 5
-  test:
+         
+  testa:
     docker:
       - image: circleci/ruby:2.4.1
     steps:
       - checkout
-      - run: echo "A hello from test"
+      - run: echo "A more familiar hi"
+      - run: sleep 5
+  testb:
+    docker:
+      - image: circleci/ruby:2.4.1
+    steps:
+      - checkout
+      - run: echo "A localized Salut"
+      - run: sleep 5
+      
+  deploy:
+    docker:
+      - image: circleci/ruby:2.4.1
+    steps:
+      - checkout
+      - run: echo "A final goodbye"
       - run: sleep 5
