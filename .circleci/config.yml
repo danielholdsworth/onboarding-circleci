@@ -1,70 +1,8 @@
-version: 2.1
-
+version: 2
 jobs:
   build:
     docker:
-      - image: cimg/base:stable
-    working_directory: ~/repo
+      - image: circleci/ruby:2.4.1
     steps:
-      - run: echo build step
-      - run: mkdir build_output
-      - run: touch build_output/compiled_output.txt
-      - persist_to_workspace:
-          root: build_output
-          paths: 
-            - '*'
-  
-  test:
-    docker:
-      - image: cimg/base:stable
-    working_directory: ~/repo
-    steps:
-      - run: echo test step
-      - attach_workspace:
-          at: ~/repo/workspace
-      - run: ls ~/repo/workspace/compiled_output.txt
-
-  test-environment:
-    docker:
-      - image: cimg/base:stable
-    
-    working_directory: ~/repo
-    
-    steps:
-      - run: echo test-env step   
-
-  deploy:
-    docker:
-      - image: cimg/base:stable
-    
-    working_directory: ~/repo
-    
-    steps:
-      - run: echo deploy step      
-
-# Invoke jobs via workflows
-# See: https://circleci.com/docs/2.0/configuration-reference/#workflows
-workflows:
-  version: 2
-  build-test:
-    jobs:
-      - build
-      - test:
-          requires: 
-            - build  
-      - deploy:
-          requires: 
-            - test  
-          filters: 
-            branches: 
-              only: 
-                - master 
-      - test-environment:
-          requires:
-            - test
-          filters:
-            branch:
-              ignore:
-                master
-
-
+      - checkout
+      - run: echo "A first hello"
