@@ -1,14 +1,21 @@
 version: 2.1
  
+# Aws-s3 orb
 commands:
-  sayhello:
-    description: "A very simple command for demonstration purposes"
+  sync:
+    description: "A simple encapsulation of doing an s3 sync"
     parameters:
+      from:
+        type: string
       to:
         type: string
-        default: "World"
+      overwrite:
+        default: false
+        type: boolean
     steps:
-      - run: echo Hello << parameters.to >>
+      - run:
+          name: Deploy to S3
+          command: aws s3 sync << parameters.from >> << parameters.to >><<# parameters.overwrite
 jobs:
   my-job:
     docker:
@@ -17,9 +24,12 @@ jobs:
           username: mydockerhub-user
           password: $DOCKERHUB_PASSWORD  # context / project UI env-var reference
     steps:
-      - sayhello:
-          to:
+      - sync:
+          from: .
+          to: "s3://mybucket_uri"
+          overwrite: true
 workflows:
   my-workflow:
     jobs:
       - my-job
+
