@@ -5,8 +5,11 @@ commands: # a reusable command with parameters
       to:
         default: "world"
         type: string
+      away:
+        default: "space"
+        type: string
     steps:
-      - run: echo "Hello <<parameters.to>>"
+      - run: echo "Hello <<parameters.to>> <<parameters.away>>"
 jobs:
   my-job:
     docker:
@@ -17,6 +20,7 @@ jobs:
     steps:
       - greeting:
           to: "My-Name"
+          away: default
 workflows:
   my-workflow:
     jobs:
