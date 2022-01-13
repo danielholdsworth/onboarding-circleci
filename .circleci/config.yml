@@ -11,5 +11,10 @@ jobs:
       - image: circleci/node:12.9.1-browsers
     steps:
       - run: echo "${CIRCLE_BUILD_NUM}"
+      - run: echo "${CIRCLE_BUILD_URL}"
+      - run: echo "${CIRCLE_BRANCH}"
+      - run: echo "${CIRCLE_JOB}"
+      - run: echo "${CIRCLE_NODE_TOTAL}"
+      - run: echo "${CIRCLE_REPOSITORY_URL}" 
           
           
