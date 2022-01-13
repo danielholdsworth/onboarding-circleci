@@ -1,20 +1,21 @@
 version: 2.1
 
-workflows:
-  build-docker-image-only:
-    jobs:
-      - echo-commands
+orbs: 
+  aws-cli: circleci/aws-cli@2.0.6
 
 jobs:
-  echo-commands:
-    docker:
-      - image: circleci/node:12.9.1-browsers
+  aws-cli-example:
+    executor: aws-cli/default
     steps:
-      - run: echo "${CIRCLE_BUILD_NUM}"
-      - run: echo "${CIRCLE_BUILD_URL}"
-      - run: echo "${CIRCLE_BRANCH}"
-      - run: echo "${CIRCLE_JOB}"
-      - run: echo "${CIRCLE_NODE_TOTAL}"
-      - run: echo "${CIRCLE_REPOSITORY_URL}" 
+      - checkout
+      - aws-cli/setup:
+          profile-name: example
+      - run: echo "Run your code here"
+workflows:
+  aws-cli:
+    jobs:
+      - aws-cli-example:
+          context: aws
+
           
           
