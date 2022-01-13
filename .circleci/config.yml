@@ -8,14 +8,10 @@ jobs:
     executor: aws-cli/default
     steps:
       - checkout
-      - aws-cli/setup:
-          profile-name: example
+      - aws-cli/install:
       - run: echo "Run your code here"
 workflows:
   aws-cli:
     jobs:
-      - aws-cli-example:
-          context: aws
-
-          
-          
+      - aws-cli-example
+## Org settings go to context and create them
