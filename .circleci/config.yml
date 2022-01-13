@@ -1,15 +1,14 @@
 version: 2.1
-commands: # a reusable command with parameters
-  greeting:
+ 
+commands:
+  sayhello:
+    description: "A very simple command for demonstration purposes"
     parameters:
       to:
-        default: "world"
         type: string
-      away:
-        default: "space"
-        type: string
+        default: "World"
     steps:
-      - run: echo "Hello <<parameters.to>> <<parameters.away>>"
+      - run: echo Hello << parameters.to >>
 jobs:
   my-job:
     docker:
@@ -18,9 +17,8 @@ jobs:
           username: mydockerhub-user
           password: $DOCKERHUB_PASSWORD  # context / project UI env-var reference
     steps:
-      - greeting:
-          to: "My-Name"
-          away: 
+      - sayhello:
+          to:
 workflows:
   my-workflow:
     jobs:
