@@ -1,20 +1,39 @@
 version: 2.1
-
-workflows:
-  build-docker-image-only:
-    jobs:
-      - echo-commands
-
-jobs:
-  echo-commands:
+ 
+executors:
+  node-docker: # declares a reusable executor
+    parameters:
+      version:
+        description: "version tag"
+        default: "lts"
+        type: string
     docker:
-      - image: circleci/node:12.9.1-browsers
+      - image: cimg/node:<<parameters.version>>
+        auth:
+          username: mydockerhub-user
+          password: $DOCKERHUB_PASSWORD  # context / project UI env-var reference
+ 
+jobs:
+  test:
+    parameters:
+      version:
+        description: "version tag"
+        default: "lts"
+        type: string
+    executor:
+      name: node-docker
+      version: <<parameters.version>>
     steps:
-      - run: echo "${CIRCLE_BUILD_NUM}"
-      - run: echo "${CIRCLE_BUILD_URL}"
-      - run: echo "${CIRCLE_BRANCH}"
-      - run: echo "${CIRCLE_JOB}"
-      - run: echo "${CIRCLE_NODE_TOTAL}"
-      - run: echo "${CIRCLE_REPOSITORY_URL}" 
-          
-          
+      - checkout
+      - run: echo "how are ya?"
+ 
+workflows:
+  matrix-tests:
+    jobs:
+      - test:
+          matrix:
+            parameters:
+              version:
+                - 13.11.0
+                - 12.16.0
+                - 10.19.0
