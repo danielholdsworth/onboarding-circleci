@@ -15,7 +15,7 @@ commands:
     steps:
       - run:
           name: Deploy to S3
-          command: aws s3 sync << parameters.from >> << parameters.to >><<# parameters.overwrite >>
+          command: aws s3 sync << parameters.from >> << parameters.to >> << parameters.overwrite >>
 jobs:
   my-job:
     docker:
