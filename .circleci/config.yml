@@ -4,39 +4,20 @@ workflows:
   version: 2
   build_and_test:
     jobs:
-      - build
-      - test:
-          requires:
-            - build 
-      - deploy-staging:
-          requires:
-            - build 
-      - deploy-prod:
-          requires:
-            - test
+      - sonar-analysis
 
 jobs:
-  build:
+  sonar-analysis:
     docker:
-      - image: circleci/ruby:2.4.1
+      - image: docker/latest
     steps:
       - checkout
-      - run: echo "Hello build"
-
-  test:
-    docker:
-      - image: circleci/ruby:2.4.1
-    steps:
-      - run: echo "Hello test"
-  
-  deploy-staging:
-    docker:
-      - image: circleci/ruby:2.4.1
-    steps:
-      - run: echo "hello deploy staging"
-      
-  deploy-prod:
-    docker:
-      - image: circleci/ruby:2.4.1
-    steps:
-      - run: echo "hello deploy-prod"
+      - setup_remote_docker
+      - attach_workspace:
+          at: /caches/coverage
+      - run: 
+          name: Sonar Analysis
+          command: |
+            mkdir -p artifacts
+            cp -r /caches/coverage ./artifacts/coverage
+            docker conatiner ps
