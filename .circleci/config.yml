@@ -1,23 +1,49 @@
-version: 2
+# indicated what version of circleci is running. Essential to state this due to feature updates etc
+version: 2.1
 
+# Orbs are a prepared package that contains reusable CircleCI config that can be used across projects
+# Using the Herouku orb that has jobs such as heroku/deploy-via-git (line 13)
+orbs:
+  heroku: circleci/heroku@0.0.10 # Invoke the Heroku orb
+
+# Workflow refers to a set of rules defining a collection of jobs and their run order.
+# In this case the deployment will not be carried out unless our tests pass. We can
+# also see that we have limited the job to our main branch. Our code will only 
+# be deployed on changes to this branch
 workflows:
-  version: 2
-  build_and_test:
+  heroku_deploy:
     jobs:
-      - sonar-analysis
+      - build
+      - heroku/deploy-via-git: # Use the pre-configured job, deploy-via-git
+          requires:
+            - build
+          filters:
+            branches:
+              only: main
 
+# Collection of steps to run in a CCI build process. We have one job here - build. Build has 6 steps
+# The heroku orb will also add another job - heroku/deploy-via-git
 jobs:
-  sonar-analysis:
+  build:
     docker:
-      - image: docker/latest
+      - image: circleci/node:12.9.1-browsers
+    working_directory: ~/repo
     steps:
       - checkout
-      - setup_remote_docker
-      - attach_workspace:
-          at: /caches/coverage
-      - run: 
-          name: Sonar Analysis
-          command: |
-            mkdir -p artifacts
-            cp -r /caches/coverage ./artifacts/coverage
-            docker conatiner ps
+      - run:
+          name: Update NPM
+          command: "sudo npm install -g npm@5"
+      - restore_cache:
+          key: dependency-cache-{{ checksum "package-lock.json" }}
+      - run:
+          name: Install Dependencies
+          command: npm install
+      - save_cache:
+          paths:
+            - ./node_modules
+            - ~/.npm
+            - ~/.cache
+          key: dependency-cache-{{ checksum "package-lock.json" }}
+      - run:
+          name: Run tests 
+          command: npm test
