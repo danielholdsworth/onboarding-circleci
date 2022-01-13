@@ -1,35 +1,13 @@
 version: 2.1
- 
-# Aws-s3 orb
-commands:
-  sync:
-    description: "A simple encapsulation of doing an s3 sync"
-    parameters:
-      from:
-        type: string
-      to:
-        type: string
-      overwrite:
-        default: false
-        type: boolean
-    steps:
-      - run:
-          name: Deploy to S3
-          command: aws s3 sync << parameters.from >> << parameters.to >> << parameters.overwrite >>
-jobs:
-  my-job:
+executors:
+  my-executor:
     docker:
-      - image: cimg/base:stable
+      - image: circleci/ruby:2.5.1-node-browsers
         auth:
           username: mydockerhub-user
           password: $DOCKERHUB_PASSWORD  # context / project UI env-var reference
+jobs:
+  my-job:
+    executor: my-executor
     steps:
-      - sync:
-          from: .
-          to: "s3://mybucket_uri"
-          overwrite: true
-workflows:
-  my-workflow:
-    jobs:
-      - my-job
-
+      - run: echo outside the executor
