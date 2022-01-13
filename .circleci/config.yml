@@ -1,25 +1,21 @@
+# config.yml
 version: 2.1
- 
 jobs:
-  sayhello: # defines a parameterized job
-    description: A job that does very little other than demonstrate what a parameterized job looks like
-    parameters:
-      saywhat:
-        description: "To whom shall we say hello?"
-        default: "World"
-        type: string
+  bar:
     machine: true
     steps:
-      - run: echo "Hello << parameters.saywhat >>"
- 
+      - checkout
+      - run:
+          command: echo "building"
+      - run:
+          command: echo "testing"
 workflows:
   build:
     jobs:
-      - sayhello:
-          name: build-sayhello
-          saywhat: Everyone
-  deploy:
-    jobs:
-      - sayhello:
-          name: deploy-sayhello
-          saywhat: All
+      - bar:
+          pre-steps:
+            - run:
+                command: echo "install custom dependency"
+          post-steps:
+            - run:
+                command: echo "upload artifact to s3"
