@@ -1,9 +1,15 @@
 version: 2.1
-orbs: 
-  docker: circleci/docker@2.0.1
+
 workflows:
   build-docker-image-only:
     jobs:
-      - docker/publish:
-          deploy: false
-          image: $CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME
+      - echo-commands
+
+jobs:
+  echo-commands:
+    docker:
+      - image: circleci/node:12.9.1-browsers
+    steps:
+      - run: echo "${CIRCLE_BUILD_NUM}"
+          
+          
