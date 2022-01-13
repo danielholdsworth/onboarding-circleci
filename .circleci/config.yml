@@ -1,20 +1,23 @@
 version: 2.1
-
-orbs: 
-  aws-cli: circleci/aws-cli@2.0.6
-
-jobs:
-  aws-cli-example:
-    executor: aws-cli/default
+commands: # a reusable command with parameters
+  greeting:
+    parameters:
+      to:
+        default: "world"
+        type: string
     steps:
-      - checkout
-      - aws-cli/setup:
-          profile-name: example
-      - run: echo "Run your code here"
+      - run: echo "Hello <<parameters.to>>"
+jobs:
+  my-job:
+    docker:
+      - image: cimg/base:stable
+        auth:
+          username: mydockerhub-user
+          password: $DOCKERHUB_PASSWORD  # context / project UI env-var reference
+    steps:
+      - greeting:
+          to: "My-Name"
 workflows:
-  aws-cli:
+  my-workflow:
     jobs:
-      - aws-cli-example:
-          context: aws
-
-## Org settings go to context and create them
+      - my-job
