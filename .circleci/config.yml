@@ -1,39 +1,23 @@
 version: 2.1
  
 executors:
-  node-docker: # declares a reusable executor
-    parameters:
-      version:
-        description: "version tag"
-        default: "lts"
-        type: string
+  node:
     docker:
-      - image: cimg/node:<<parameters.version>>
+      - image: cimg/node:lts
         auth:
           username: mydockerhub-user
           password: $DOCKERHUB_PASSWORD  # context / project UI env-var reference
+    environment:
+     ENV: ci
  
 jobs:
-  test:
-    parameters:
-      version:
-        description: "version tag"
-        default: "lts"
-        type: string
-    executor:
-      name: node-docker
-      version: <<parameters.version>>
+  build:
+    docker:
+      - image: cimg/base:stable
+        auth:
+          username: mydockerhub-user
+          password: $DOCKERHUB_PASSWORD  # context / project UI env-var reference
+    # The test executor below will be overwritten by the more explicit "docker" executor. Any env vars will be added.
+    executor: node
     steps:
-      - checkout
-      - run: echo "how are ya?"
- 
-workflows:
-  matrix-tests:
-    jobs:
-      - test:
-          matrix:
-            parameters:
-              version:
-                - 13.11.0
-                - 12.16.0
-                - 10.19.0
+      - run: echo "Node will not be installed."
