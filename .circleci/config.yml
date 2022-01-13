@@ -11,3 +11,8 @@ jobs:
     executor: my-executor
     steps:
       - run: echo outside the executor
+
+workflows:
+  my-workflow:
+    jobs:
+      - my-job
