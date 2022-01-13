@@ -20,7 +20,7 @@ jobs:
     steps:
       - greeting:
           to: "My-Name"
-          away: default
+          away: 
 workflows:
   my-workflow:
     jobs:
