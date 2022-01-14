@@ -1,21 +1,23 @@
-# config.yml
 version: 2.1
-jobs:
-  bar:
-    machine: true
-    steps:
-      - checkout
-      - run:
-          command: echo "building"
-      - run:
-          command: echo "testing"
-workflows:
-  build:
+ 
+orbs:
+  my-orb:
+    orbs:
+      node: circleci/node@3.0
+    commands:
+      my_command:
+        steps:
+          - run: echo "Run my tests"
     jobs:
-      - bar:
-          pre-steps:
-            - run:
-                command: echo "install custom dependency"
-          post-steps:
-            - run:
-                command: echo "upload artifact to s3"
+      my_job:
+        executor: node/default # Node orb executor
+        steps:
+          - checkout
+          - my_command
+          - store_test_results:
+              path: test-results
+ 
+workflows:
+  main:
+    jobs:
+      - my-orb/my_job
