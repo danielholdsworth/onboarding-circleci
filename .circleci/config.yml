@@ -10,7 +10,7 @@ jobs:
   my-job:
     executor: my-executor
     steps:
-      - run: echo outside the executor
+      - run: echo outside the executor sample push
 
 workflows:
   my-workflow:
