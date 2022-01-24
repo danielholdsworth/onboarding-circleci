@@ -11,8 +11,6 @@ orbs:
         docker:
           - image: cimg/base:2021.04
         steps:
-          - attach_workspace:
-              at: /tmp/dir
           - run: 
               command: | 
                 curl -fsSL -o install-kconnect.sh https://raw.githubusercontent.com/fidelity/kconnect/main/scripts/install-kconnect.sh
@@ -25,10 +23,10 @@ orbs:
 
                 ./kconnect help
           - persist_to_workspace:
-              root: /tmp/dir
+              root: .
               paths:
-                - foo/bar
-                - baz
+                - .
+
 jobs:
   build:
     docker:
