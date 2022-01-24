@@ -10,11 +10,11 @@ orbs:
       my_job:
         docker:
           - image: cimg/base:2021.04
+            auth:
+              username: mydockerhub-user
+              password: $DOCKERHUB_PASSWORD 
         steps:
-          - run: curl -fsSL -o install-kconnect.sh https://raw.githubusercontent.com/fidelity/kconnect/main/scripts/install-kconnect.sh
-              chmod 700 install-kconnect.sh
-              ./install-kconnect.sh
-
+          - run: docker pull docker.io/kconnectcli/kconnect:latest
 
 
  
