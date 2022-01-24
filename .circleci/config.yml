@@ -24,7 +24,7 @@ orbs:
 
                 cd kconnect && ls -a
 
-                kconnect help
+                ./kconnect help
 
 
 
