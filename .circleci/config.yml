@@ -22,6 +22,8 @@ orbs:
                 
                 ./install-kconnect.sh
 
+                kconnect help
+
 
 
  
