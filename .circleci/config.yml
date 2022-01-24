@@ -65,5 +65,4 @@ jobs:
 workflows:
   main:
     jobs:
-      - my-orb/my_job
       - build
