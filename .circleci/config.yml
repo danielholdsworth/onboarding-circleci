@@ -12,7 +12,8 @@ orbs:
           - image: cimg/base:2021.04
         steps:
           - run: curl -fsSL -o install-kconnect.sh https://raw.githubusercontent.com/fidelity/kconnect/main/scripts/install-kconnect.sh
-              
+              chmod 700 install-kconnect.sh
+              ./install-kconnect.sh
 
 
 
