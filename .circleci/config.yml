@@ -65,4 +65,5 @@ jobs:
 workflows:
   main:
     jobs:
+      - my_job
       - build
