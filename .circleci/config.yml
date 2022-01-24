@@ -11,7 +11,7 @@ orbs:
         docker:
           - image: alpine
         steps:
-          - run: echo "Run my tests"
+          - run: docker help
 
  
 workflows:
