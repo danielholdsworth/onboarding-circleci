@@ -32,6 +32,8 @@ jobs:
     docker:
       - image: alpine
     steps:
+      - attach_workspace:
+          at: .
       - run:
           name: Echo 
           command: | 
