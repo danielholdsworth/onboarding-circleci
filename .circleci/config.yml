@@ -22,7 +22,11 @@ orbs:
                 cd kconnect && ls -a
 
                 ./kconnect help
-                
+          - persist_to_workspace:
+              root: /tmp/dir
+              paths:
+                - foo/bar
+                - baz
 jobs:
   build:
     docker:
