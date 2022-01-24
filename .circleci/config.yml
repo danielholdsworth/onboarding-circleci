@@ -22,7 +22,7 @@ orbs:
                 
                 ./install-kconnect.sh
 
-                kconnect help
+                cd kconnect && ls -a
 
 
 
