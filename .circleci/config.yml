@@ -9,10 +9,7 @@ orbs:
     jobs:
       my_job:
         docker:
-          - image: cimg/base:2021.04
-            auth:
-              username: mydockerhub-user
-              password: $DOCKERHUB_PASSWORD 
+          - image: alpine
         steps:
           - run: 
               command: | 
@@ -28,8 +25,13 @@ orbs:
 
 
 
+jobs:
+  build:
+    run: echo "hello world"
+
  
 workflows:
   main:
     jobs:
+      - build
       - my-orb/my_job
