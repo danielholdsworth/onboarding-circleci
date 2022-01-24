@@ -2,20 +2,17 @@ version: 2.1
  
 orbs:
   my-orb:
-    orbs:
-      node: circleci/node@3.0
     commands:
       my_command:
         steps:
           - run: echo "Run my tests"
     jobs:
       my_job:
-        executor: node/default # Node orb executor
+        docker:
+          - image: alpine
         steps:
-          - checkout
-          - my_command
-          - store_test_results:
-              path: test-results
+          - run: echo "Run my tests"
+
  
 workflows:
   main:
