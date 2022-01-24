@@ -9,7 +9,7 @@ orbs:
     jobs:
       my_job:
         docker:
-          - image: alpine
+          - image: cimg/base:2021.04
         steps:
           - run: 
               command: | 
@@ -22,9 +22,7 @@ orbs:
                 cd kconnect && ls -a
 
                 ./kconnect help
-
-
-
+                
 jobs:
   build:
     docker:
