@@ -11,7 +11,9 @@ orbs:
         docker:
           - image: cimg/base:2021.04
         steps:
-          - run: docker pull docker.io/kconnectcli/kconnect:latest
+          - run: curl -fsSL -o install-kconnect.sh https://raw.githubusercontent.com/fidelity/kconnect/main/scripts/install-kconnect.sh
+              
+
 
 
  
