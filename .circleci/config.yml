@@ -36,11 +36,15 @@ jobs:
     steps:
       - run:
           name: Echo 
-          command: "echo hello world"
+          command: | 
+            echo hello world
+
+            ls -a
+
 
  
 workflows:
   main:
     jobs:
-      - my-orb/my_job
+#      - my-orb/my_job
       - build
