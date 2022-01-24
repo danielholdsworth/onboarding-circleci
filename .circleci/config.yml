@@ -28,6 +28,8 @@ orbs:
                 - .
 
 jobs:
+  orbs:
+    my-orb
   build:
     docker:
       - image: alpine
