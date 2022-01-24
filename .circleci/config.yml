@@ -11,9 +11,7 @@ orbs:
         docker:
           - image: cimg/base:2021.04
         steps:
-          - run: 
-            docker pull docker.io/kconnectcli/kconnect:latest
-            #docker run -it --rm -v ~/.kconnect:/.kconnect kconnect:latest use eks --idp-protocol saml
+          - run: docker pull docker.io/kconnectcli/kconnect:latest
 
 
  
