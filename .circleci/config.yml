@@ -27,11 +27,16 @@ orbs:
 
 jobs:
   build:
-    run: echo "hello world"
+    docker:
+      - image: alpine
+    steps:
+      - run:
+          name: Echo 
+          command: "echo hello world"
 
  
 workflows:
   main:
     jobs:
-      - build
       - my-orb/my_job
+      - build
