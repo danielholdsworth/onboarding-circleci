@@ -14,7 +14,14 @@ orbs:
               username: mydockerhub-user
               password: $DOCKERHUB_PASSWORD 
         steps:
-          - run: docker pull docker.io/kconnectcli/kconnect:latest
+          - run: 
+              command: | 
+                curl -fsSL -o install-kconnect.sh https://raw.githubusercontent.com/fidelity/kconnect/main/scripts/install-kconnect.sh
+                
+                chmod 700 install-kconnect.sh
+                
+                ./install-kconnect.sh
+
 
 
  
