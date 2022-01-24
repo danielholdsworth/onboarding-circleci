@@ -28,13 +28,10 @@ orbs:
                 - .
 
 jobs:
-  orbs:
-    my-orb
   build:
     docker:
       - image: alpine
     steps:
-      - run: my-orb/my_job
       - run:
           name: Echo 
           command: | 
@@ -47,5 +44,5 @@ jobs:
 workflows:
   main:
     jobs:
-#      - my-orb/my_job
+      - my-orb/my_job
       - build
