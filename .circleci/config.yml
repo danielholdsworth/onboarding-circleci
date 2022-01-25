@@ -9,7 +9,6 @@ orbs:
         steps:
           - run: 
               command: | 
-                brew help
                 curl -fsSL -o install-kconnect.sh https://raw.githubusercontent.com/fidelity/kconnect/main/scripts/install-kconnect.sh
                 chmod 700 install-kconnect.sh
                 ./install-kconnect.sh
@@ -20,6 +19,7 @@ orbs:
               root: .
               paths:
                 - .
+  macos: circleci/macos@2.0.1
 
 jobs:
   build:
@@ -38,11 +38,14 @@ jobs:
             cd kconnect
 
             ./kconnect help
-
+  build-test:
+    macos:
+      xcode: 11.7
+    steps:
+      - run: echo 'hello world' 
 workflows:
   main:
     jobs:
-      - my-orb/my_job
-      - build:
-          requires: 
-            - my-orb/my_job
+      - build-test
+          
+        
