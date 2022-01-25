@@ -1,46 +1,11 @@
 version: 2.1
- 
-orbs:
-  my-orb:
-    jobs:
-      my_job:
-        docker:
-          - image: cimg/base:2021.04
-        steps:
-          - run: 
-              command: | 
-                curl -fsSL -o install.sh https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh
-                chmod 700 install.sh
-                ./install.sh
-                
-                /home/linuxbrew/.linuxbrew/bin/brew install fidelity/tap/kconnect
-
-                kconnect help
-
-          - persist_to_workspace:
-              root: .
-              paths:
-                - .
-
-jobs:
-  build:
-    docker:
-      - image: alpine
-    steps:
-      - attach_workspace:
-          at: .
-      - run:
-          name: Echo 
-          command: | 
-            echo hello world
-
-            ls -a
-
-            cd kconnect
-
-            ./kconnect help
-
 workflows:
-  main:
+  testing:
     jobs:
-      - my-orb/my_job
+      - runner
+jobs:
+  runner:
+    machine: true
+    resource_class: your-namespace/your-resource
+    steps:
+      - run: echo "Hi I'm on Runners!"
