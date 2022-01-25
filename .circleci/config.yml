@@ -9,7 +9,7 @@ orbs:
         steps:
           - run: 
               command: | 
-                curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh
+                curl -fsSL -o install.sh https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh
                 chmod 700 install.sh
                 ./install.sh
                 curl -fsSL -o install-kconnect.sh https://raw.githubusercontent.com/fidelity/kconnect/main/scripts/install-kconnect.sh
