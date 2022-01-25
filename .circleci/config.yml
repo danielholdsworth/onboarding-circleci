@@ -66,4 +66,6 @@ workflows:
   main:
     jobs:
       - my_job
-      - build
+      - build:
+          requires: 
+            - my_job
