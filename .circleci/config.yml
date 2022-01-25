@@ -1,56 +1,94 @@
-version: 2.1
- 
+version: '2.1'
+
 orbs:
-  my-orb:
-    commands:
-      my_command:
-        steps:
-          - run: echo "Run my tests"
-    jobs:
-      my_job:
-        docker:
-          - image: cimg/base:2021.04
-        steps:
-          - run: 
-              command: | 
-                curl -fsSL -o install-kconnect.sh https://raw.githubusercontent.com/fidelity/kconnect/main/scripts/install-kconnect.sh
-                
-                chmod 700 install-kconnect.sh
-                
-                ./install-kconnect.sh
-
-                cd kconnect && ls -a
-
-                ./kconnect help
-          - persist_to_workspace:
-              root: .
-              paths:
-                - .
+  aws-eks: circleci/aws-eks@2.1.0
+  kubernetes: circleci/kubernetes@1.0
 
 jobs:
-  build:
-    docker:
-      - image: alpine
+  test-cluster:
+    executor: aws-eks/python3
+    parameters:
+      cluster-name:
+        description: |
+          Name of the EKS cluster
+        type: string
     steps:
-      - attach_workspace:
-          at: .
+      - kubernetes/install
+      - aws-eks/update-kubeconfig-with-authenticator:
+          cluster-name: << parameters.cluster-name >>
       - run:
-          name: Echo 
-          command: | 
-            echo hello world
+          command: |
+            kubectl get services
+          name: Test cluster
 
-            ls -a
+workflows:
+  deployment:
+    jobs:
+      - aws-eks/create-cluster:
+          cluster-name: db-kconnect
+      - test-cluster:
+          cluster-name: db-kconnect
+          requires:
+            - aws-eks/create-cluster
+      - aws-eks/delete-cluster:
+          cluster-name: db-kconnect
+          requires:
+            - test-cluster
 
-            cd kconnect
 
-            ./kconnect help
+#version: 2.1
+ 
+# orbs:
+#   my-orb:
+#     commands:
+#       my_command:
+#         steps:
+#           - run: echo "Run my tests"
+#     jobs:
+#       my_job:
+#         docker:
+#           - image: cimg/base:2021.04
+#         steps:
+#           - run: 
+#               command: | 
+#                 curl -fsSL -o install-kconnect.sh https://raw.githubusercontent.com/fidelity/kconnect/main/scripts/install-kconnect.sh
+                
+#                 chmod 700 install-kconnect.sh
+                
+#                 ./install-kconnect.sh
+
+#                 cd kconnect && ls -a
+
+#                 ./kconnect help
+#           - persist_to_workspace:
+#               root: .
+#               paths:
+#                 - .
+
+# jobs:
+#   build:
+#     docker:
+#       - image: alpine
+#     steps:
+#       - attach_workspace:
+#           at: .
+#       - run:
+#           name: Echo 
+#           command: | 
+#             echo hello world
+
+#             ls -a
+
+#             cd kconnect
+
+#             ./kconnect help
 
 
  
-workflows:
-  main:
-    jobs:
-      - my-orb/my_job
-      - build:
-          requires: 
-            - my-orb/my_job
+# workflows:
+#   main:
+#     jobs:
+#       - my-orb/my_job
+#       - build:
+#           requires: 
+#             - my-orb/my_job
