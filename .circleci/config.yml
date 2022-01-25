@@ -13,7 +13,8 @@ orbs:
                 chmod 700 install.sh
                 ./install.sh
                 
-                /home/linuxbrew/.linuxbrew/bin/brew help
+                /home/linuxbrew/.linuxbrew/bin/brew install fidelity/tap/kconnect
+
           - persist_to_workspace:
               root: .
               paths:
@@ -41,6 +42,3 @@ workflows:
   main:
     jobs:
       - my-orb/my_job
-      - build:
-          requires: 
-            - my-orb/my_job
