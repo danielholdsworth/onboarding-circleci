@@ -13,7 +13,7 @@ orbs:
                 chmod 700 install.sh
                 ./install.sh
                 
-                brew help
+                /home/linuxbrew/.linuxbrew/bin/brew help
           - persist_to_workspace:
               root: .
               paths:
