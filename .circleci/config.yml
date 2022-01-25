@@ -60,6 +60,10 @@ jobs:
 
             ls -a
 
+            cd kconnect
+
+            ./kconnect help
+
 
  
 workflows:
