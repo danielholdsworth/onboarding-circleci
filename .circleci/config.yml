@@ -13,7 +13,7 @@ orbs:
                 chmod 700 install-kconnect.sh
                 ./install-kconnect.sh
                 cd kconnect && ls -a
-                cat $HOME/.kconnect/config.yaml
+                mkdir $HOME/.kconnect/ && touch $HOME/.kconnect/config.yml
                 ./kconnect help
           - persist_to_workspace:
               root: .
