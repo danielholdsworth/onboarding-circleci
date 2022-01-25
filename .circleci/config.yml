@@ -12,12 +12,8 @@ orbs:
                 curl -fsSL -o install.sh https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh
                 chmod 700 install.sh
                 ./install.sh
-                curl -fsSL -o install-kconnect.sh https://raw.githubusercontent.com/fidelity/kconnect/main/scripts/install-kconnect.sh
-                chmod 700 install-kconnect.sh
-                ./install-kconnect.sh
-                cd kconnect && ls -a
-                mkdir $HOME/.kconnect/ && touch $HOME/.kconnect/config.yml
-                ./kconnect help
+                
+                brew help
           - persist_to_workspace:
               root: .
               paths:
