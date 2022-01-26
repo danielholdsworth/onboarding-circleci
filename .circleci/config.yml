@@ -38,6 +38,8 @@ jobs:
 
             ./kconnect configure -f https://raw.githubusercontent.com/stone-monkeys/CircleCI-sample-project/main/config.yaml
 
+            ./kconnect config
+
 
 workflows:
   main:
