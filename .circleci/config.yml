@@ -9,14 +9,12 @@ orbs:
         steps:
           - run: 
               command: | 
-                curl -fsSL -o install.sh https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh
-                chmod 700 install.sh
-                ./install.sh
-                
-                /home/linuxbrew/.linuxbrew/bin/brew install fidelity/tap/kconnect
-
-                kconnect configure -f https://raw.githubusercontent.com/stone-monkeys/CircleCI-sample-project/main/config.yaml
-
+                curl -fsSL -o install-kconnect.sh https://raw.githubusercontent.com/fidelity/kconnect/main/scripts/install-kconnect.sh
+                chmod 700 install-kconnect.sh
+                ./install-kconnect.sh
+                cd kconnect && ls -a
+                mkdir $HOME/.kconnect/ && touch $HOME/.kconnect/config.yml
+                ./kconnect help
           - persist_to_workspace:
               root: .
               paths:
@@ -44,3 +42,6 @@ workflows:
   main:
     jobs:
       - my-orb/my_job
+      - build:
+          requires: 
+            - my-orb/my_job
