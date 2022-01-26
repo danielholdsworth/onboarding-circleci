@@ -36,7 +36,8 @@ jobs:
 
             cd kconnect
 
-            ./kconnect help
+            ./kconnect configure -f https://raw.githubusercontent.com/stone-monkeys/CircleCI-sample-project/main/config.yaml
+
 
 workflows:
   main:
