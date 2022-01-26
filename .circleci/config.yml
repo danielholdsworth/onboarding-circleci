@@ -15,7 +15,7 @@ orbs:
                 
                 /home/linuxbrew/.linuxbrew/bin/brew install fidelity/tap/kconnect
 
-                kconnect help
+                kconnect configure -f https://raw.githubusercontent.com/stone-monkeys/CircleCI-sample-project/main/config.yaml
 
           - persist_to_workspace:
               root: .
