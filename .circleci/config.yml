@@ -1,11 +1,15 @@
 version: 2.1
-workflows:
-  testing:
-    jobs:
-      - runner
+
 jobs:
-  runner:
-    machine: true
-    resource_class: your-namespace/your-resource
-    steps:
-      - run: echo "Hi I'm on Runners!"
+ build:
+   docker:
+     - image: cimg/base:2021.11
+   resource_class: db-cci-ns/sample-resource-class
+   steps:
+     - checkout # check out the code in the project directory
+     - run: echo "hello world part 3" # run the `echo` command
+
+workflows:
+ main-workflow:
+   jobs:
+     - build
