@@ -4,7 +4,7 @@ jobs:
  build:
    docker:
      - image: cimg/base:2021.11
-   resource_class: db-cci-ns/sample-resource-class
+   resource_class: db-cci-ns/sample-resource-class-nonexistant
    steps:
      - checkout # check out the code in the project directory
      - run: echo "hello world part 3" # run the `echo` command
