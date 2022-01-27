@@ -5,7 +5,8 @@ workflows:
       - runner
 jobs:
   runner:
-    machine: true
+    docker:
+      - image: cimg/base:2021.11
     resource_class: db-cci-ns/sample-resource-class
     steps:
       - run: echo "Hi I'm on Runners!"
