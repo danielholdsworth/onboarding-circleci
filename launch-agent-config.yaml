@@ -1,0 +1,7 @@
+api:
+  auth-token: 5cdf55312c55b5a5679668a9f18c68401f8e09a85f54b2f3ce654faa017b6a2bb7cd8b79a79f2058
+runner:
+  name: CCI-RUNNER-DEMO
+  command_prefix:
+  working_directory:
+  cleanup_working_directory: true

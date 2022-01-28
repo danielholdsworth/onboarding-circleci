@@ -40,7 +40,7 @@ jobs:
 
             ./kconnect config
 
-            ./kconnect use eks 
+            ./kconnect use eks --cluster-id arn:aws:eks:eu-west-1:660990364978:cluster/kconnect
 
 workflows:
   main:
