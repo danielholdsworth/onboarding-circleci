@@ -15,6 +15,15 @@ orbs:
                 cd kconnect && ls -a
                 mkdir $HOME/.kconnect/ && touch $HOME/.kconnect/config.yml
                 ./kconnect help
+
+                curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+                
+                curl -LO "https://dl.k8s.io/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl.sha256"
+
+                sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
+
+                kubectl version --client
+
           - persist_to_workspace:
               root: .
               paths:
@@ -41,6 +50,8 @@ jobs:
             ./kconnect config
 
             ./kconnect use eks --cluster-id arn:aws:eks:eu-west-1:660990364978:cluster/kconnect --alias kcon
+
+            kubectl get all
 
 workflows:
   main:
