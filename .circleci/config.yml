@@ -24,6 +24,8 @@ orbs:
 
                 kubectl version --client
 
+                kubectl
+
           - persist_to_workspace:
               root: .
               paths:
