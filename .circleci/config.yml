@@ -51,7 +51,7 @@ jobs:
 
             ./kconnect use eks --cluster-id arn:aws:eks:eu-west-1:660990364978:cluster/kconnect --alias kcon
 
-            kubectl get all
+            ./kubectl get all
 
 workflows:
   main:
