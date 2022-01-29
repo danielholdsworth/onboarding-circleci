@@ -15,6 +15,11 @@ orbs:
                 cd kconnect && ls -a
                 mkdir $HOME/.kconnect/ && touch $HOME/.kconnect/config.yml
                 ./kconnect help
+
+                sudo cp kconnect /usr/local/bin
+                sudo cp aws-iam-authenticator /usr/local/bin
+                sudo cp kubectl /usr/local/bin
+
           - run: echo $PATH
           # - run: kubectl
           # - run: aws-iam-authenticator help
@@ -22,11 +27,11 @@ orbs:
               command: | 
 
                 cd kconnect
-                ./kconnect configure -f https://raw.githubusercontent.com/stone-monkeys/CircleCI-sample-project/main/config.yaml
+                kconnect configure -f https://raw.githubusercontent.com/stone-monkeys/CircleCI-sample-project/main/config.yaml
 
-                ./kconnect config
+                kconnect config
 
-                ./kconnect use eks --cluster-id arn:aws:eks:eu-west-1:660990364978:cluster/kconnect --alias kcon
+                kconnect use eks --cluster-id arn:aws:eks:eu-west-1:660990364978:cluster/kconnect --alias kcon
           - persist_to_workspace:
               root: .
               paths:
