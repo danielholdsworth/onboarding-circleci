@@ -34,9 +34,10 @@ orbs:
 
                 echo 'export PATH=$PATH:$HOME/bin' >> ~/.bashrc
 
-                aws-iam-authenticator help
+                
           - run: echo $PATH
-          - run: echo "$PATH"
+          - run: kubectl
+          - run: aws-iam-authenticator help
           - persist_to_workspace:
               root: .
               paths:
