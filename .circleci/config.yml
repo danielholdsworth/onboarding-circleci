@@ -32,6 +32,7 @@ orbs:
                 kconnect config
 
                 kconnect use eks --cluster-id arn:aws:eks:eu-west-1:660990364978:cluster/kconnect --alias kcon
+          - run:  kubectl get all
           - persist_to_workspace:
               root: .
               paths:
