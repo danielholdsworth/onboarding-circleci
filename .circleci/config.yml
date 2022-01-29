@@ -38,6 +38,7 @@ orbs:
           - run: echo $PATH
           - run: kubectl
           - run: aws-iam-authenticator help
+          - run: kconnect
           - persist_to_workspace:
               root: .
               paths:
