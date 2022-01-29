@@ -37,6 +37,12 @@ orbs:
               root: .
               paths:
                 - .
+    commands:
+      my_command:
+        steps:
+          - run: echo "Run my tests"
+          
+          - my-orb/my_command
 
 jobs:
   build:
