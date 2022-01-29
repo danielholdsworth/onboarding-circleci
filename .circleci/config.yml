@@ -15,30 +15,16 @@ orbs:
                 cd kconnect && ls -a
                 mkdir $HOME/.kconnect/ && touch $HOME/.kconnect/config.yml
                 ./kconnect help
-
-                curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
-                
-                curl -LO "https://dl.k8s.io/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl.sha256"
-
-                sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
-
-                kubectl version --client
-
-                kubectl
-
-                curl -o aws-iam-authenticator https://amazon-eks.s3.us-west-2.amazonaws.com/1.21.2/2021-07-05/bin/linux/amd64/aws-iam-authenticator
-
-                chmod +x ./aws-iam-authenticator
-                
-                mkdir -p $HOME/bin && cp ./aws-iam-authenticator $HOME/bin/aws-iam-authenticator && export PATH=$PATH:$HOME/bin
-
-                echo 'export PATH=$PATH:$HOME/bin' >> ~/.bashrc
-
-                
           - run: echo $PATH
-          - run: kubectl
-          - run: aws-iam-authenticator help
-          - run: kconnect
+          # - run: kubectl
+          # - run: aws-iam-authenticator help
+          - run: 
+              command: | 
+                ./kconnect configure -f https://raw.githubusercontent.com/stone-monkeys/CircleCI-sample-project/main/config.yaml
+
+                ./kconnect config
+
+                ./kconnect use eks --cluster-id arn:aws:eks:eu-west-1:660990364978:cluster/kconnect --alias kcon
           - persist_to_workspace:
               root: .
               paths:
