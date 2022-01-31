@@ -57,7 +57,7 @@ orbs:
                 
                 cd kconnect
           
-                kconnect use <<parameters.cluster_provider>> --cluster-id <<parameters.cluster_id>> --alias kcon
+                kconnect use <<parameters.cluster_provider>> --cluster-id <<parameters.cluster_id>> --alias <<parameters.alias>>
 
                 kubectl get all
 
@@ -71,7 +71,10 @@ jobs:
       - kconnect/install
       - kconnect/configure:
           config_file_path: https://raw.githubusercontent.com/stone-monkeys/CircleCI-sample-project/main/config.yaml
-      - kconnect/use
+      - kconnect/use:
+          cluster_provider: eks
+          cluster_id: arn:aws:eks:eu-west-1:660990364978:cluster/kconnect
+          alias: eks
 
 workflows:
   main:
