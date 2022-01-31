@@ -39,6 +39,10 @@ orbs:
                 kconnect configure -f https://raw.githubusercontent.com/stone-monkeys/CircleCI-sample-project/main/config.yaml
 
                 kconnect config
+          - persist_to_workspace:
+              root: .
+              paths:
+                - .
       execute:
         docker:
           - image: cimg/base:2021.04
@@ -56,6 +60,8 @@ orbs:
             
                 kconnect config
 
+                kconnect use eks --cluster-id arn:aws:eks:eu-west-1:660990364978:cluster/kconnect --alias kcon
+          - run:  kubectl get all
     commands:
       my_command:
         parameters:
