@@ -8,14 +8,9 @@ orbs:
           - run: 
               name: Install Kconnect
               command: | 
-                
                 curl -fsSL -o install-kconnect.sh https://raw.githubusercontent.com/fidelity/kconnect/main/scripts/install-kconnect.sh
                 chmod 700 install-kconnect.sh
                 ./install-kconnect.sh
-                cd kconnect && ls -a
-                mkdir $HOME/.kconnect/ && touch $HOME/.kconnect/config.yml
-                ./kconnect help
-
                 sudo cp kconnect /usr/local/bin
                 sudo cp aws-iam-authenticator /usr/local/bin
                 sudo cp kubectl /usr/local/bin
@@ -57,6 +52,11 @@ orbs:
           - run:
               name: Display the user's connection history as a table
               command: kconnect ls
+      version:
+        steps:
+          - run:
+              name: Display the version of kconnect
+              command: kconnect version
 
 
 jobs:
@@ -79,6 +79,7 @@ jobs:
       - kconnect/to:
           alias: eks-test-kconnect
       - kconnect/ls
+      - kconnect/version
           
 
 workflows:
