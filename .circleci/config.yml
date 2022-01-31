@@ -37,8 +37,15 @@ orbs:
                 - .
     commands:
       my_command:
+        parameters:
+          to:
+            default: "world"
+            type: string
+          away:
+            default: "space"
+            type: string
         steps:
-          - run: echo "Run my tests"
+          - run: echo "Hello <<parameters.to>> <<parameters.away>>"
 
 jobs:
   build:
@@ -47,7 +54,9 @@ jobs:
     steps:
       - attach_workspace:
           at: .
-      - run: my-orb/my_command
+      - my-orb/my_command:
+          to: "My-Name"
+          away: default
       # - run:
       #     name: Echo 
       #     command: | 
@@ -69,7 +78,7 @@ workflows:
   main:
     jobs:
       - build
-      - my-orb/my_job
+      # - my-orb/my_job
       # - build:
       #     requires: 
       #       - my-orb/my_job
