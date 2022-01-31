@@ -23,6 +23,20 @@ orbs:
               root: .
               paths:
                 - .
+      configure:
+        docker:
+          - image: cimg/base:2021.04
+        steps:
+          - attach_workspace:
+              at: .
+          - run: 
+              command: |
+                cd kconnect
+                sudo cp kconnect /usr/local/bin
+                sudo cp aws-iam-authenticator /usr/local/bin
+                sudo cp kubectl /usr/local/bin
+
+                kconnect configure -f https://raw.githubusercontent.com/stone-monkeys/CircleCI-sample-project/main/config.yaml
       execute:
         docker:
           - image: cimg/base:2021.04
@@ -37,8 +51,7 @@ orbs:
                 sudo cp kconnect /usr/local/bin
                 sudo cp aws-iam-authenticator /usr/local/bin
                 sudo cp kubectl /usr/local/bin
-                kconnect configure -f https://raw.githubusercontent.com/stone-monkeys/CircleCI-sample-project/main/config.yaml
-
+            
                 kconnect config
 
                 kconnect use eks --cluster-id arn:aws:eks:eu-west-1:660990364978:cluster/kconnect --alias kcon
