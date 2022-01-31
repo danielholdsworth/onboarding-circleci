@@ -60,6 +60,9 @@ jobs:
           cluster_provider: eks
           cluster_id: arn:aws:eks:eu-west-1:660990364978:cluster/kconnect
           alias: eks
+      - run:
+          name: Test kconnect connection
+          command: kubectl get all
 
 workflows:
   main:
