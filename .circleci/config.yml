@@ -3,7 +3,7 @@ version: 2.1
 orbs:
   my-orb:
     jobs:
-      my_job:
+      install:
         docker:
           - image: cimg/base:2021.04
         steps:
@@ -19,7 +19,16 @@ orbs:
                 sudo cp kconnect /usr/local/bin
                 sudo cp aws-iam-authenticator /usr/local/bin
                 sudo cp kubectl /usr/local/bin
-
+          - persist_to_workspace:
+              root: .
+              paths:
+                - .
+      execute:
+        docker:
+          - image: cimg/base:2021.04
+        steps:
+          - attach_workspace:
+              at: .
           - run: echo $PATH
           - run: 
               command: | 
@@ -31,10 +40,6 @@ orbs:
 
                 kconnect use eks --cluster-id arn:aws:eks:eu-west-1:660990364978:cluster/kconnect --alias kcon
           - run:  kubectl get all
-          - persist_to_workspace:
-              root: .
-              paths:
-                - .
     commands:
       my_command:
         parameters:
@@ -78,7 +83,12 @@ workflows:
   main:
     jobs:
       - build
-      # - my-orb/my_job
+      - my-orb/install:
+          requires:
+            - build
+      - my-orb/execute:
+          requires:
+            - my-orb/install
       # - build:
       #     requires: 
       #       - my-orb/my_job
