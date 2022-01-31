@@ -23,7 +23,7 @@ orbs:
       configure:
         parameters: 
             config_file_path:
-                description: The path to your configuration file for kconnect
+                description: File or remote location to use to set the default configuration
                 type: string
         steps:
           - run:
@@ -40,19 +40,24 @@ orbs:
                 kconnect config
       
       use:
+        parameters: 
+            cluster_provider:
+                description: The use command requires a target provider name
+                type: string
+            cluster_id:
+                description: Id of the cluster to use
+                type: string
+            alias: 
+                description: Friendly name to give to give the connection
+                type: string
         steps:
           - run:
               name: Use Kconnect
               command: |
                 
                 cd kconnect
-                sudo cp kconnect /usr/local/bin
-                sudo cp aws-iam-authenticator /usr/local/bin
-                sudo cp kubectl /usr/local/bin
-            
-                kconnect config
-
-                kconnect use eks --cluster-id arn:aws:eks:eu-west-1:660990364978:cluster/kconnect --alias kcon
+          
+                kconnect use <<parameters.cluster_provider>> --cluster-id <<parameters.cluster_id>> --alias kcon
 
                 kubectl get all
 
