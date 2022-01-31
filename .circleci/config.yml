@@ -122,6 +122,7 @@ jobs:
       - attach_workspace:
           at: .
       - my-orb/kconnect-install
+      - my-orb/kconnect-configure
       # - my-orb/my_command:
       #     to: "My-Name"
       #     away: default
