@@ -1,73 +1,12 @@
 version: 2.1
  
 orbs:
-  my-orb:
-    jobs:
-      install:
-        docker:
-          - image: cimg/base:2021.04
-        steps:
-          - run: 
-              command: | 
-                curl -fsSL -o install-kconnect.sh https://raw.githubusercontent.com/fidelity/kconnect/main/scripts/install-kconnect.sh
-                chmod 700 install-kconnect.sh
-                ./install-kconnect.sh
-                cd kconnect && ls -a
-                mkdir $HOME/.kconnect/ && touch $HOME/.kconnect/config.yml
-                ./kconnect help
-
-                sudo cp kconnect /usr/local/bin
-                sudo cp aws-iam-authenticator /usr/local/bin
-                sudo cp kubectl /usr/local/bin
-          - persist_to_workspace:
-              root: .
-              paths:
-                - .
-      configure:
-        docker:
-          - image: cimg/base:2021.04
-        steps:
-          - attach_workspace:
-              at: .
-          - run: 
-              command: |
-                cd kconnect
-                sudo cp kconnect /usr/local/bin
-                sudo cp aws-iam-authenticator /usr/local/bin
-                sudo cp kubectl /usr/local/bin
-
-                kconnect configure -f https://raw.githubusercontent.com/stone-monkeys/CircleCI-sample-project/main/config.yaml
-
-                kconnect config
-          - persist_to_workspace:
-              root: .
-              paths:
-                - .
-      execute:
-        docker:
-          - image: cimg/base:2021.04
-        steps:
-          - attach_workspace:
-              at: .
-          - run: echo $PATH
-          - run: 
-              command: | 
-
-                cd kconnect
-                sudo cp kconnect /usr/local/bin
-                sudo cp aws-iam-authenticator /usr/local/bin
-                sudo cp kubectl /usr/local/bin
-            
-                kconnect config
-
-                kconnect use eks --cluster-id arn:aws:eks:eu-west-1:660990364978:cluster/kconnect --alias kcon
-
-                kubectl get all
-          - run:  kubectl get all
+  kconnect:
     commands:
-      kconnect-install:
+      install:
         steps:
           - run: 
+              name: Install Kconnect
               command: | 
                 
                 curl -fsSL -o install-kconnect.sh https://raw.githubusercontent.com/fidelity/kconnect/main/scripts/install-kconnect.sh
@@ -81,9 +20,14 @@ orbs:
                 sudo cp aws-iam-authenticator /usr/local/bin
                 sudo cp kubectl /usr/local/bin
 
-      kconnect-configure:
+      configure:
+        parameters: 
+            config_file_path:
+                description: The path to your configuration file for kconnect
+                type: string
         steps:
           - run:
+              name: Configure Kconnect
               command: | 
 
                 cd kconnect
@@ -91,13 +35,14 @@ orbs:
                 sudo cp aws-iam-authenticator /usr/local/bin
                 sudo cp kubectl /usr/local/bin
 
-                kconnect configure -f https://raw.githubusercontent.com/stone-monkeys/CircleCI-sample-project/main/config.yaml
+                kconnect configure -f <<parameters.config_file_path>>
 
                 kconnect config
       
-      kconnect-use:
+      use:
         steps:
           - run:
+              name: Use Kconnect
               command: |
                 
                 cd kconnect
@@ -110,9 +55,6 @@ orbs:
                 kconnect use eks --cluster-id arn:aws:eks:eu-west-1:660990364978:cluster/kconnect --alias kcon
 
                 kubectl get all
-
-
-      
 
 jobs:
   build:
@@ -121,62 +63,12 @@ jobs:
     steps:
       - attach_workspace:
           at: .
-      - my-orb/kconnect-install
-      - my-orb/kconnect-configure
-      - my-orb/kconnect-use
-      # - my-orb/my_command:
-      #     to: "My-Name"
-      #     away: default
-      # - run:
-      #     name: Echo 
-      #     command: | 
-      #       echo hello world
-
-      #       ls -a
-
-      #       cd kconnect
-
-      #       ./kconnect configure -f https://raw.githubusercontent.com/stone-monkeys/CircleCI-sample-project/main/config.yaml
-
-      #       ./kconnect config
-
-      #       ./kconnect use eks --cluster-id arn:aws:eks:eu-west-1:660990364978:cluster/kconnect --alias kcon
-
-      #       ./kubectl get all
+      - kconnect/install
+      - kconnect/configure:
+          config_file_path: https://raw.githubusercontent.com/stone-monkeys/CircleCI-sample-project/main/config.yaml
+      - kconnect/use
 
 workflows:
   main:
     jobs:
       - build
-      # - my-orb/install:
-      #     requires:
-      #       - build
-      # - my-orb/configure:
-      #     requires:
-      #       - my-orb/install
-      # - my-orb/execute:
-      #     requires:
-      #       - my-orb/configure
-      # - build:
-      #     requires: 
-      #       - my-orb/my_job
-
-
-
-# curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
-
-# curl -LO "https://dl.k8s.io/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl.sha256"
-
-# sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
-
-# kubectl version --client
-
-# kubectl
-
-# curl -o aws-iam-authenticator https://amazon-eks.s3.us-west-2.amazonaws.com/1.21.2/2021-07-05/bin/linux/amd64/aws-iam-authenticator
-
-# chmod +x ./aws-iam-authenticator
-
-# mkdir -p $HOME/bin && cp ./aws-iam-authenticator $HOME/bin/aws-iam-authenticator && export PATH=$PATH:$HOME/bin
-
-# echo 'export PATH=$PATH:$HOME/bin' >> ~/.bashrc
