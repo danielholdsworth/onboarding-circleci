@@ -27,8 +27,7 @@ orbs:
         steps:
           - run:
               name: Configure Kconnect
-              command: | 
-                kconnect configure -f <<parameters.config_file_path>>
+              command: kconnect configure -f <<parameters.config_file_path>>
       use:
         parameters: 
             cluster_provider:
@@ -43,8 +42,22 @@ orbs:
         steps:
           - run:
               name: Use Kconnect
-              command: |          
-                kconnect use <<parameters.cluster_provider>> --cluster-id <<parameters.cluster_id>> --alias <<parameters.alias>>
+              command: kconnect use <<parameters.cluster_provider>> --cluster-id <<parameters.cluster_id>> --alias <<parameters.alias>>
+      to:
+        parameters:
+            alias: 
+              description: Friendly name to give to give the connection
+              type: string
+        steps:
+          - run:
+              name: Connect to a given cluster
+              command: kconnect to <<parameters.alias>>
+      ls:
+        steps:
+          - run:
+              name: Display the user's connection history as a table
+              command: kconnect ls
+
 
 jobs:
   build:
@@ -59,10 +72,14 @@ jobs:
       - kconnect/use:
           cluster_provider: eks
           cluster_id: arn:aws:eks:eu-west-1:660990364978:cluster/kconnect
-          alias: eks
+          alias: eks-test-kconnect
       - run:
           name: Test kconnect connection
           command: kubectl get all
+      - kconnect/to:
+          alias: eks-test-kconnect
+      - kconnect/ls
+          
 
 workflows:
   main:
