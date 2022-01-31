@@ -61,29 +61,70 @@ orbs:
                 kconnect config
 
                 kconnect use eks --cluster-id arn:aws:eks:eu-west-1:660990364978:cluster/kconnect --alias kcon
+
+                kubectl get all
           - run:  kubectl get all
     commands:
-      my_command:
-        parameters:
-          to:
-            default: "world"
-            type: string
-          away:
-            default: "space"
-            type: string
+      kconnect-install:
         steps:
-          - run: echo "Hello <<parameters.to>> <<parameters.away>>"
+          - run: 
+              command: | 
+                
+                curl -fsSL -o install-kconnect.sh https://raw.githubusercontent.com/fidelity/kconnect/main/scripts/install-kconnect.sh
+                chmod 700 install-kconnect.sh
+                ./install-kconnect.sh
+                cd kconnect && ls -a
+                mkdir $HOME/.kconnect/ && touch $HOME/.kconnect/config.yml
+                ./kconnect help
+
+                sudo cp kconnect /usr/local/bin
+                sudo cp aws-iam-authenticator /usr/local/bin
+                sudo cp kubectl /usr/local/bin
+
+      kconnect-configure:
+        steps:
+          - run:
+              command: | 
+
+                cd kconnect
+                sudo cp kconnect /usr/local/bin
+                sudo cp aws-iam-authenticator /usr/local/bin
+                sudo cp kubectl /usr/local/bin
+
+                kconnect configure -f https://raw.githubusercontent.com/stone-monkeys/CircleCI-sample-project/main/config.yaml
+
+                kconnect config
+      
+      kconnect-use:
+        steps:
+          - run:
+              command: |
+                
+                cd kconnect
+                sudo cp kconnect /usr/local/bin
+                sudo cp aws-iam-authenticator /usr/local/bin
+                sudo cp kubectl /usr/local/bin
+            
+                kconnect config
+
+                kconnect use eks --cluster-id arn:aws:eks:eu-west-1:660990364978:cluster/kconnect --alias kcon
+
+                kubectl get all
+
+
+      
 
 jobs:
   build:
     docker:
-      - image: alpine
+      - image: cimg/base:2021.04
     steps:
       - attach_workspace:
           at: .
-      - my-orb/my_command:
-          to: "My-Name"
-          away: default
+      - my-orb/kconnect-install
+      # - my-orb/my_command:
+      #     to: "My-Name"
+      #     away: default
       # - run:
       #     name: Echo 
       #     command: | 
@@ -105,15 +146,15 @@ workflows:
   main:
     jobs:
       - build
-      - my-orb/install:
-          requires:
-            - build
-      - my-orb/configure:
-          requires:
-            - my-orb/install
-      - my-orb/execute:
-          requires:
-            - my-orb/configure
+      # - my-orb/install:
+      #     requires:
+      #       - build
+      # - my-orb/configure:
+      #     requires:
+      #       - my-orb/install
+      # - my-orb/execute:
+      #     requires:
+      #       - my-orb/configure
       # - build:
       #     requires: 
       #       - my-orb/my_job
