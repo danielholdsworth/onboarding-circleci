@@ -19,7 +19,7 @@ orbs:
         parameters: 
             config_file_path:
                 description: File or remote location to use to set the default configuration
-                type: string
+                type: env_var_name
         steps:
           - run:
               name: Configure Kconnect
@@ -28,13 +28,13 @@ orbs:
         parameters: 
             cluster_provider:
                 description: The use command requires a target provider name
-                type: string
+                type: env_var_name
             cluster_id:
                 description: Id of the cluster to use
-                type: string
+                type: env_var_name
             alias: 
                 description: Friendly name to give to give the connection
-                type: string
+                type: env_var_name
         steps:
           - run:
               name: Use Kconnect
@@ -43,7 +43,7 @@ orbs:
         parameters:
             alias: 
               description: Friendly name to give to give the connection
-              type: string
+              type: env_var_name
         steps:
           - run:
               name: Connect to a given cluster
