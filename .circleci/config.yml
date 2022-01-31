@@ -21,8 +21,6 @@ orbs:
                 sudo cp kubectl /usr/local/bin
 
           - run: echo $PATH
-          # - run: kubectl
-          # - run: aws-iam-authenticator help
           - run: 
               command: | 
 
@@ -41,8 +39,6 @@ orbs:
       my_command:
         steps:
           - run: echo "Run my tests"
-          
-          - my-orb/my_command
 
 jobs:
   build:
@@ -51,26 +47,28 @@ jobs:
     steps:
       - attach_workspace:
           at: .
-      - run:
-          name: Echo 
-          command: | 
-            echo hello world
+      - run: my-orb/my_command
+      # - run:
+      #     name: Echo 
+      #     command: | 
+      #       echo hello world
 
-            ls -a
+      #       ls -a
 
-            cd kconnect
+      #       cd kconnect
 
-            ./kconnect configure -f https://raw.githubusercontent.com/stone-monkeys/CircleCI-sample-project/main/config.yaml
+      #       ./kconnect configure -f https://raw.githubusercontent.com/stone-monkeys/CircleCI-sample-project/main/config.yaml
 
-            ./kconnect config
+      #       ./kconnect config
 
-            ./kconnect use eks --cluster-id arn:aws:eks:eu-west-1:660990364978:cluster/kconnect --alias kcon
+      #       ./kconnect use eks --cluster-id arn:aws:eks:eu-west-1:660990364978:cluster/kconnect --alias kcon
 
-            ./kubectl get all
+      #       ./kubectl get all
 
 workflows:
   main:
     jobs:
+      - build
       - my-orb/my_job
       # - build:
       #     requires: 
