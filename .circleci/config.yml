@@ -19,7 +19,6 @@ orbs:
                 sudo cp kconnect /usr/local/bin
                 sudo cp aws-iam-authenticator /usr/local/bin
                 sudo cp kubectl /usr/local/bin
-
       configure:
         parameters: 
             config_file_path:
@@ -29,16 +28,7 @@ orbs:
           - run:
               name: Configure Kconnect
               command: | 
-
-                cd kconnect
-                sudo cp kconnect /usr/local/bin
-                sudo cp aws-iam-authenticator /usr/local/bin
-                sudo cp kubectl /usr/local/bin
-
                 kconnect configure -f <<parameters.config_file_path>>
-
-                kconnect config
-      
       use:
         parameters: 
             cluster_provider:
@@ -53,13 +43,8 @@ orbs:
         steps:
           - run:
               name: Use Kconnect
-              command: |
-                
-                cd kconnect
-          
+              command: |          
                 kconnect use <<parameters.cluster_provider>> --cluster-id <<parameters.cluster_id>> --alias <<parameters.alias>>
-
-                kubectl get all
 
 jobs:
   build:
