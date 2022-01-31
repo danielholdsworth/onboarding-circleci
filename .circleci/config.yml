@@ -102,9 +102,12 @@ workflows:
       - my-orb/install:
           requires:
             - build
-      - my-orb/execute:
+      - my-orb/configure:
           requires:
             - my-orb/install
+      - my-orb/execute:
+          requires:
+            - my-orb/configure
       # - build:
       #     requires: 
       #       - my-orb/my_job
