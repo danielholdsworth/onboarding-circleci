@@ -34,6 +34,9 @@ orbs:
               command: | 
 
                 cd kconnect
+                sudo cp kconnect /usr/local/bin
+                sudo cp aws-iam-authenticator /usr/local/bin
+                sudo cp kubectl /usr/local/bin
                 kconnect configure -f https://raw.githubusercontent.com/stone-monkeys/CircleCI-sample-project/main/config.yaml
 
                 kconnect config
