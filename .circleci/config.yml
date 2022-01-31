@@ -11,9 +11,7 @@ orbs:
                 curl -fsSL -o install-kconnect.sh https://raw.githubusercontent.com/fidelity/kconnect/main/scripts/install-kconnect.sh
                 chmod 700 install-kconnect.sh
                 ./install-kconnect.sh
-                cd kconnect && ls -a
-                mkdir $HOME/.kconnect/ && touch $HOME/.kconnect/config.yml
-                ./kconnect help
+                cd kconnect 
                 sudo cp kconnect /usr/local/bin
                 sudo cp aws-iam-authenticator /usr/local/bin
                 sudo cp kubectl /usr/local/bin
