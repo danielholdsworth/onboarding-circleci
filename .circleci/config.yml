@@ -12,9 +12,14 @@ orbs:
                 chmod 700 install-kconnect.sh
                 ./install-kconnect.sh
                 cd kconnect 
-                sudo cp kconnect /usr/local/bin
-                sudo cp aws-iam-authenticator /usr/local/bin
-                sudo cp kubectl /usr/local/bin
+                
+                if [[ $EUID == 0 ]]; then export SUDO=""; else # Check if we are root
+                  export SUDO="sudo";
+                fi
+                
+                $SUDO cp kconnect /usr/local/bin
+                $SUDO cp aws-iam-authenticator /usr/local/bin
+                $SUDO cp kubectl /usr/local/bin
       configure:
         parameters: 
             config_file_path:
