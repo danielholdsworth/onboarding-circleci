@@ -7,7 +7,7 @@ jobs:
   runner:
     docker:
       - image: cimg/base:2021.11
-    resource_class: db-cci-ns/sample-resource-class
+    resource_class: db-cci-ns/sample-resource-class-new
     steps:
       - run: echo "Hi I'm on Runners!"
 # version: 2.1
