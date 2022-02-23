@@ -76,7 +76,7 @@ orbs:
               environment:
                 PARAM_TO: <<parameters.hello>>
               name: hello env
-              command: <<include(test.sh)>>
+              command: \<<include(./test.sh)>>
 
 
 jobs:
