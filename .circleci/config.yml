@@ -80,6 +80,7 @@ jobs:
     environment:
         PARAM_TO: hellofromjob
     steps:
+      - checkout
       # - attach_workspace:
       #     at: .
       # - kconnect/install
