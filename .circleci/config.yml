@@ -22,7 +22,7 @@ jobs:
     steps:
       - checkout
       - kconnect/hello: 
-            hello: hellojob
+            hello: $CIRCLE_BRANCH
           
 workflows:
   main:
