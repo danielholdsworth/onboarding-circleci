@@ -19,6 +19,8 @@ jobs:
   build:
     docker:
       - image: cimg/base:2021.04
+    environment:
+      CIRCLE_BRANCH: "$CIRCLE_BRANCH"
     steps:
       - checkout
       - param-test/hello: 
