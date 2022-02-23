@@ -11,7 +11,7 @@ orbs:
         steps:
           - run:
               environment:
-                PARAM_TO: <<parameters.hello>>
+                PARAM_TO: <<parameters.image>>
               name: hello env
               command: sh test.sh
 
@@ -19,12 +19,11 @@ jobs:
   build:
     docker:
       - image: cimg/base:2021.04
-    environment:
-      CIRCLE_BRANCH: "$CIRCLE_BRANCH"
+
     steps:
       - checkout
       - param-test/hello: 
-            hello: "$CIRCLE_BRANCH"
+            image: cimg/python:stable
           
 workflows:
   main:
