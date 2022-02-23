@@ -72,7 +72,9 @@ orbs:
               description: Friendly name to give to give the connection
               type: string
         steps:
-          - run: 
+          - run:
+              environment:
+                PARAM_TO: <<parameters.hello>>
               name: hello env
               command: sudo sh test.sh
 
