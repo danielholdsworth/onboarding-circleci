@@ -58,6 +58,13 @@ orbs:
           - run:
               name: Display the version of kconnect
               command: kconnect version
+      hello:
+        steps:
+          - run: 
+              name: hello env
+              environment:
+                PARAM: hello world
+              command: echo $PARAM
 
 
 jobs:
@@ -65,22 +72,23 @@ jobs:
     docker:
       - image: cimg/base:2021.04
     steps:
-      - attach_workspace:
-          at: .
-      - kconnect/install
-      - kconnect/configure:
-          config_file_path: https://raw.githubusercontent.com/stone-monkeys/CircleCI-sample-project/main/config.yaml
-      - kconnect/use:
-          cluster_provider: eks
-          cluster_id: arn:aws:eks:eu-west-1:660990364978:cluster/kconnect
-          alias: eks-test-kconnect
-      - run:
-          name: Test kconnect connection
-          command: kubectl get all
-      - kconnect/to:
-          alias: eks-test-kconnect
-      - kconnect/ls
-      - kconnect/version
+      # - attach_workspace:
+      #     at: .
+      # - kconnect/install
+      # - kconnect/configure:
+      #     config_file_path: https://raw.githubusercontent.com/stone-monkeys/CircleCI-sample-project/main/config.yaml
+      # - kconnect/use:
+      #     cluster_provider: eks
+      #     cluster_id: arn:aws:eks:eu-west-1:660990364978:cluster/kconnect
+      #     alias: eks-test-kconnect
+      # - run:
+      #     name: Test kconnect connection
+      #     command: kubectl get all
+      # - kconnect/to:
+      #     alias: eks-test-kconnect
+      # - kconnect/ls
+      # - kconnect/version
+      - kconnect/hello
           
 
 workflows:
