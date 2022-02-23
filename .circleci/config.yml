@@ -6,7 +6,7 @@ orbs:
       hello:
         parameters:
             hello: 
-              description: Friendly name to give to give the connection
+              description: Description of the command
               type: string
         steps:
           - run:
@@ -15,7 +15,6 @@ orbs:
               name: hello env
               command: sh test.sh
 
-
 jobs:
   build:
     docker:
@@ -23,9 +22,8 @@ jobs:
     steps:
       - checkout
       - kconnect/hello: 
-            hello: hellofromjob
+            hello: hellojob
           
-
 workflows:
   main:
     jobs:
