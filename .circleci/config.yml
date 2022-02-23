@@ -70,7 +70,7 @@ orbs:
         steps:
           - run: 
               name: hello env
-              command: echo $PARAM_TO
+              command: sh test.sh
 
 
 jobs:
