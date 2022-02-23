@@ -67,6 +67,10 @@ orbs:
               name: Display the version of kconnect
               command: kconnect version
       hello:
+        parameters:
+            hello: 
+              description: Friendly name to give to give the connection
+              type: string
         steps:
           - run: 
               name: hello env
@@ -97,7 +101,8 @@ jobs:
       #     alias: eks-test-kconnect
       # - kconnect/ls
       # - kconnect/version
-      - kconnect/hello
+      - kconnect/hello: 
+            hello: $PARAM_TO
           
 
 workflows:
