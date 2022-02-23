@@ -75,8 +75,8 @@ orbs:
           - run: 
               name: hello env
               environment:
-                PARAM: hello world
-              command: echo <<parameters.hello-world>>
+                PARAM: <<parameters.hello-world>>
+              command: echo $PARAM
 
 
 jobs:
