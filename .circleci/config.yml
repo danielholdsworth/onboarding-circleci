@@ -5,7 +5,7 @@ orbs:
     commands:
       hello:
         parameters:
-            hello: 
+            image: 
               description: Description of the command
               type: string
         steps:
