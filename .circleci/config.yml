@@ -25,6 +25,9 @@ orbs:
             config_file_path:
                 description: File or remote location to use to set the default configuration
                 type: string
+            hello-world:
+                description: File or remote location to use to set the default configuration
+                type: string
         steps:
           - run:
               name: Configure Kconnect
@@ -64,12 +67,16 @@ orbs:
               name: Display the version of kconnect
               command: kconnect version
       hello:
+        parameters:
+          hello-world:
+                description: File or remote location to use to set the default configuration
+                type: string
         steps:
           - run: 
               name: hello env
               environment:
                 PARAM: hello world
-              command: echo $PARAM
+              command: echo <<parameters.hello-world>>
 
 
 jobs:
@@ -93,7 +100,8 @@ jobs:
       #     alias: eks-test-kconnect
       # - kconnect/ls
       # - kconnect/version
-      - kconnect/hello
+      - kconnect/hello:
+            hello-world: hi
           
 
 workflows:
