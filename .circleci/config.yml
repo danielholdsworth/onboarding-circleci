@@ -70,7 +70,7 @@ orbs:
         steps:
           - run: 
               name: hello env
-              command: sh test.sh
+              command: sudo sh test.sh
 
 
 jobs:
