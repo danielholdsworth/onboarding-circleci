@@ -3,69 +3,6 @@ version: 2.1
 orbs:
   kconnect:
     commands:
-      install:
-        steps:
-          - run: 
-              name: Install Kconnect
-              command: | 
-                curl -fsSL -o install-kconnect.sh https://raw.githubusercontent.com/fidelity/kconnect/main/scripts/install-kconnect.sh
-                chmod 700 install-kconnect.sh
-                ./install-kconnect.sh
-                cd kconnect 
-                
-                if [[ $EUID == 0 ]]; then export SUDO=""; else # Check if we are root
-                  export SUDO="sudo";
-                fi
-                
-                $SUDO cp kconnect /usr/local/bin
-                $SUDO cp aws-iam-authenticator /usr/local/bin
-                $SUDO cp kubectl /usr/local/bin
-      configure:
-        parameters: 
-            config_file_path:
-                description: File or remote location to use to set the default configuration
-                type: string
-            hello-world:
-                description: File or remote location to use to set the default configuration
-                type: string
-        steps:
-          - run:
-              name: Configure Kconnect
-              command: kconnect configure -f <<parameters.config_file_path>>
-      use:
-        parameters: 
-            cluster_provider:
-                description: The use command requires a target provider name
-                type: string
-            cluster_id:
-                description: Id of the cluster to use
-                type: string
-            alias: 
-                description: Friendly name to give to give the connection
-                type: string
-        steps:
-          - run:
-              name: Use Kconnect
-              command: kconnect use <<parameters.cluster_provider>> --cluster-id <<parameters.cluster_id>> --alias <<parameters.alias>>
-      to:
-        parameters:
-            alias: 
-              description: Friendly name to give to give the connection
-              type: string
-        steps:
-          - run:
-              name: Connect to a given cluster
-              command: kconnect to <<parameters.alias>>
-      ls:
-        steps:
-          - run:
-              name: Display the user's connection history as a table
-              command: kconnect ls
-      version:
-        steps:
-          - run:
-              name: Display the version of kconnect
-              command: kconnect version
       hello:
         parameters:
             hello: 
@@ -85,22 +22,6 @@ jobs:
       - image: cimg/base:2021.04
     steps:
       - checkout
-      # - attach_workspace:
-      #     at: .
-      # - kconnect/install
-      # - kconnect/configure:
-      #     config_file_path: https://raw.githubusercontent.com/stone-monkeys/CircleCI-sample-project/main/config.yaml
-      # - kconnect/use:
-      #     cluster_provider: eks
-      #     cluster_id: arn:aws:eks:eu-west-1:660990364978:cluster/kconnect
-      #     alias: eks-test-kconnect
-      # - run:
-      #     name: Test kconnect connection
-      #     command: kubectl get all
-      # - kconnect/to:
-      #     alias: eks-test-kconnect
-      # - kconnect/ls
-      # - kconnect/version
       - kconnect/hello: 
             hello: hellofromjob
           
