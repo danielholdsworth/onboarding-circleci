@@ -3,28 +3,26 @@ version: 2.1
 orbs:
   param-test:
     commands:
-      hello:
+      get-image:
         parameters:
             image: 
-              description: Description of the command
+              description: foo bar
               type: string
         steps:
           - run:
               environment:
-                PARAM_TO: <<parameters.image>>
-              name: hello env
+                DOCKER_IMAGE: <<parameters.image>>
+              name: image env
               command: sh test.sh
 
 jobs:
   build:
     docker:
       - image: cimg/base:2021.04
-
     steps:
       - checkout
-      - param-test/hello: 
+      - param-test/get-image: 
             image: cimg/python:stable
-          
 workflows:
   main:
     jobs:
