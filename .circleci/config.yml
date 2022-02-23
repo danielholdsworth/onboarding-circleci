@@ -1,7 +1,7 @@
 version: 2.1
  
 orbs:
-  kconnect:
+  param-test:
     commands:
       hello:
         parameters:
@@ -21,8 +21,8 @@ jobs:
       - image: cimg/base:2021.04
     steps:
       - checkout
-      - kconnect/hello: 
-            hello: $CIRCLE_BRANCH
+      - param-test/hello: 
+            hello: "$CIRCLE_BRANCH"
           
 workflows:
   main:
