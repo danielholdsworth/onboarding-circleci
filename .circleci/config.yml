@@ -22,7 +22,7 @@ jobs:
     steps:
       - checkout
       - param-test/get-image: 
-            image: cimg/python:stable
+            image: ${CIRCLE_BRANCH}
 workflows:
   main:
     jobs:
