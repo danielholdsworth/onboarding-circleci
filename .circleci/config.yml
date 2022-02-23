@@ -76,15 +76,13 @@ orbs:
               environment:
                 PARAM_TO: <<parameters.hello>>
               name: hello env
-              command: sudo sh test.sh
+              command: <<include(test.sh)>>
 
 
 jobs:
   build:
     docker:
       - image: cimg/base:2021.04
-    environment:
-        PARAM_TO: hellofromjob
     steps:
       - checkout
       # - attach_workspace:
@@ -104,7 +102,7 @@ jobs:
       # - kconnect/ls
       # - kconnect/version
       - kconnect/hello: 
-            hello: $PARAM_TO
+            hello: hellofromjob
           
 
 workflows:
